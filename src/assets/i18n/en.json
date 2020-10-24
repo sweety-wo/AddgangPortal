@@ -1,0 +1,32 @@
+{
+    "Login": {
+        "title": "Login",
+        "emailLabel": "Email",
+        "passwordLabel": "Password",
+        "emailRequiredMsg": "Email is required",
+        "emailInvalidMsg": "Invalid email address",
+        "passwordRequiredMsg": "Password is required",
+        "passwordInvalidMsg": "Password isn't long enough, minimum of 6 characters",
+        "keeploginLable": "Keep me signed in",
+        "fotgotpassLabel": "Forgot password?",
+        "signinBtn": "Sign in",
+        "signupBtn": "Create New User"
+    },
+    "Signup": {
+        "title": "Sign Up",
+        "nameLabel": "Full Name",
+        "emailLabel": "Email",
+        "passwordLabel": "Password",
+        "confirm_passLabel": "Confirm Password",
+        "nameRequiredMsg": "Full Name is required",
+        "nameInvalidMsg": "Minimum of 3 characters",
+        "emailRequiredMsg": "Email is required",
+        "emailInvalidMsg": "Invalid email address",
+        "passwordRequiredMsg": "Password is required",
+        "passwordInvalidMsg": "Password isn't long enough, minimum of 6 characters",
+        "confirm_passRequiredMsg": "Confirm Password is required",
+        "conffirm_passInvalidMsg": "Password is not matching",
+        "signupBtn": "Sign Up",
+        "signinBtn": "Already have an account? Sign in!"
+    }
+}
