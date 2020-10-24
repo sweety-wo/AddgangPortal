@@ -6,6 +6,11 @@
     height: 100%;
     width: 100%;
     position: absolute;
+    background-image: url('../../../assets/img/app/bg-image.jpg');
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
     .card {
         padding: 15px;
         .btn-link {
