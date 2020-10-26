@@ -1,7 +1,12 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { ResetAccountStateAction } from '../../states/account';
+import { SignUpFormSubmitAction } from '../../states/form';
+import { Subject } from 'rxjs';
+import { Store } from '@ngxs/store';
+import { UpdateFormValue } from '@ngxs/form-plugin';
 
 @Component({
     selector: 'az-register',
@@ -9,39 +14,59 @@ import { TranslateService } from '@ngx-translate/core';
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnDestroy {
     public router: Router;
     public form: FormGroup;
-    public name: AbstractControl;
-    public email: AbstractControl;
-    public password: AbstractControl;
-    public confirmPassword: AbstractControl;
+    private ngUnsubscribe = new Subject();
+    public sex = [{ name: 'Male', value: 'male' }, { name: 'Female', value: 'female' }];
+    defaultSex = 'male';
 
-    constructor(router: Router, fb: FormBuilder, public translate: TranslateService) {
+    constructor(
+        router: Router,
+        fb: FormBuilder,
+        public translate: TranslateService,
+        private _store: Store
+    ) {
         this.router = router;
         this.form = fb.group({
-            name: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
-            email: ['', Validators.compose([Validators.required, emailValidator])],
+            userName: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
             password: ['', Validators.required],
-            confirmPassword: ['', Validators.required]
+            confirmPassword: ['', Validators.required],
+            fullName: ['', Validators.required],
+            surName: ['', Validators.required],
+            DOB: ['', Validators.required],
+            sex: ['', Validators.required],
+            mobileNo: ['', Validators.required]
         }, { validator: matchingPasswords('password', 'confirmPassword') });
 
-        this.name = this.form.controls['name'];
-        this.email = this.form.controls['email'];
-        this.password = this.form.controls['password'];
-        this.confirmPassword = this.form.controls['confirmPassword'];
+        this.form.controls['sex'].setValue(this.defaultSex, { onlySelf: true });
+
         const lang = localStorage.getItem("language");
-        translate.setDefaultLang(lang)
+        translate.setDefaultLang(lang);
     }
 
     public onSubmit(values: Object): void {
         if (this.form.valid) {
-            console.log(values);
-            this.router.navigate(['/login']);
+            this._store.dispatch(new SignUpFormSubmitAction());
         }
     }
 
+    get controls() {
+        return this.form.controls;
+    }
 
+    private fnResetSignUpFormState() {
+        this._store.dispatch(
+            new UpdateFormValue({ value: {}, path: 'form.signup' })
+        );
+    }
+
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+        this.fnResetSignUpFormState();
+        this._store.dispatch(new ResetAccountStateAction());
+    }
 }
 
 export function emailValidator(control: FormControl): { [key: string]: any } {

@@ -6,26 +6,24 @@
                 logo
             </div>
             <div class="mr-5">
-                <img height="40" width="60" (click)="changeLang('no')"
-                    src="assets/img/app/flag-norway.png" alt="">
-                <img height="40" width="60" class="ml-2" (click)="changeLang('en')"
-                    src="assets/img/app/flag-uk.png" alt="">
+                <img height="40" width="60" (click)="changeLang('no')" src="assets/img/app/flag-norway.png" alt="">
+                <img height="40" width="60" class="ml-2" (click)="changeLang('en')" src="assets/img/app/flag-uk.png"
+                    alt="">
             </div>
         </div>
         <div class="col-xl-4 col-md-6 col-10 offset-7">
             <div class="card">
                 <div class="card-body text-center">
                     <h2 class="card-title">{{'Login.title' | translate}}</h2>
-                    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class=" text-left">
+                    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" ngxsForm="form.login" class=" text-left">
                         <div class="form-group">
-                            <input [formControl]="email" class="form-control checking-field"
-                                placeholder="{{'Login.emailLabel' | translate}}" type="text">
+                            <input [formControl]="userName" class="form-control checking-field"
+                                placeholder="{{'Login.userName' | translate}}" type="text">
                             <span class="help-block text-danger"
-                                *ngIf="form.get('email').touched && form.get('email').hasError('required')">
-                                {{'Login.emailRequiredMsg' | translate}}</span>
-                            <span class="help-block text-danger"
-                                *ngIf="form.get('email').touched && form.get('email').hasError('invalidEmail')">
-                                {{'Login.emailInvalidMsg' | translate}}</span>
+                                *ngIf="form.get('userName').touched && form.get('userName').hasError('required')">
+                                {{'Login.userNameRequiredMsg' | translate}}</span>
+                            <span class="text-danger" *ngIf="form.get('userName').hasError('minlength')">
+                                {{'Login.userNameInvalidMsg' | translate}}</span>
                         </div>
                         <div class="form-group">
                             <input [formControl]="password" class="form-control checking-field"
@@ -43,7 +41,8 @@
                                 <label class="custom-control-label"
                                     for="login-keep">{{'Login.keeploginLable' | translate}}</label>
                             </div>
-                            <a class="btn btn-link forgot transition pull-right" href="javascript:void(0);">
+                            <a class="btn btn-link forgot transition pull-right" (click)="fnForgotPassword()"
+                                href="javascript:void(0);">
                                 {{'Login.fotgotpassLabel' | translate}}</a>
                         </div>
                         <div class="form-group">

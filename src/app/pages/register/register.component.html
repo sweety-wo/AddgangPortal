@@ -3,29 +3,20 @@
         <div class="card">
             <div class="card-body text-center">
                 <h2 class="card-title">{{'Signup.title' | translate}}</h2>
-                <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="text-left">
+                <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" ngxsForm="form.signup" class="text-left">
                     <div class="form-group">
-                        <input [formControl]="name" class="form-control checking-field"
-                            placeholder="{{'Signup.nameLabel' | translate}}" type="text">
-                        <span class="help-block" *ngIf="form.get('name').touched">
-                            <span class="text-danger" *ngIf="form.get('name').hasError('required')">
-                                {{'Signup.nameRequiredMsg' | translate}}</span>
-                            <span class="text-danger" *ngIf="form.get('name').hasError('minlength')">
-                                {{'Signup.nameInvalidMsg' | translate}}</span>
+                        <input formControlName="userName" class="form-control checking-field"
+                            placeholder="{{'Signup.userNameLabel' | translate}}" type="text">
+                        <span class="help-block" *ngIf="form.get('userName').touched">
+                            <span class="text-danger" *ngIf="form.get('userName').hasError('required')">
+                                {{'Signup.userNameRequiredMsg' | translate}}</span>
+                            <span class="text-danger" *ngIf="form.get('userName').hasError('minlength')">
+                                {{'Signup.userNameInvalidMsg' | translate}}</span>
                         </span>
                     </div>
+
                     <div class="form-group">
-                        <input [formControl]="email" class="form-control checking-field"
-                            placeholder="{{'Signup.emailLabel' | translate}}" type="text">
-                        <span class="help-block" *ngIf="form.get('email').touched">
-                            <span class="text-danger" *ngIf="form.get('email').hasError('required')">
-                                {{'Signup.emailRequiredMsg' | translate}}</span>
-                            <span class="text-danger" *ngIf="form.get('email').hasError('invalidEmail')">
-                                {{'Signup.emailInvalidMsg' | translate}}</span>
-                        </span>
-                    </div>
-                    <div class="form-group">
-                        <input [formControl]="password" class="form-control checking-field"
+                        <input formControlName="password" class="form-control checking-field"
                             placeholder="{{'Signup.passwordLabel' | translate}}" type="password" minlength="6">
                         <span class="help-block" *ngIf="form.get('password').touched">
                             <span class="text-danger" *ngIf="form.get('password').hasError('required')">
@@ -34,8 +25,9 @@
                                 {{'Signup.passwordInvalidMsg' | translate}}</span>
                         </span>
                     </div>
+
                     <div class="form-group">
-                        <input [formControl]="confirmPassword" class="form-control checking-field"
+                        <input formControlName="confirmPassword" class="form-control checking-field"
                             placeholder="{{'Signup.confirm_passLabel' | translate}}" type="password">
                         <span class="help-block" *ngIf="form.get('confirmPassword').touched">
                             <span class="text-danger" *ngIf="form.get('confirmPassword').hasError('required')">
@@ -45,6 +37,51 @@
                                 {{'Signup.conffirm_passInvalidMsg' | translate}}</span>
                         </span>
                     </div>
+
+                    <div class="form-group">
+                        <input formControlName="fullName" class="form-control checking-field"
+                            placeholder="{{'Signup.fullName' | translate}}" type="text">
+                        <span class="help-block" *ngIf="form.get('fullName').touched">
+                            <span class="text-danger" *ngIf="form.get('fullName').hasError('required')">
+                                {{'Signup.fullNameRequiredMsg' | translate}}</span>
+                        </span>
+                    </div>
+
+                    <div class="form-group">
+                        <input formControlName="surName" class="form-control checking-field"
+                            placeholder="{{'Signup.surName' | translate}}" type="text">
+                        <span class="help-block" *ngIf="form.get('surName').touched">
+                            <span class="text-danger" *ngIf="form.get('surName').hasError('required')">
+                                {{'Signup.surNameRequiredMsg' | translate}}</span>
+                        </span>
+                    </div>
+
+                    <div class="form-group">
+                        <input formControlName="DOB" class="form-control checking-field"
+                            placeholder="{{'Signup.DOB' | translate}}" type="date">
+                        <span class="help-block" *ngIf="form.get('DOB').touched">
+                            <span class="text-danger" *ngIf="form.get('DOB').hasError('required')">
+                                {{'Signup.DOBRequiredMsg' | translate}}</span>
+                        </span>
+                    </div>
+
+                    <div class="form-group">
+                        <select class="form-control" id="units" formControlName="sex">
+                            <option class="optionList" *ngFor="let item of sex" [value]="item.value">
+                                {{ item.name }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <input formControlName="mobileNo" class="form-control checking-field"
+                            placeholder="{{'Signup.mobileNo' | translate}}" type="tel">
+                        <span class="help-block" *ngIf="form.get('mobileNo').touched">
+                            <span class="text-danger" *ngIf="form.get('mobileNo').hasError('required')">
+                                {{'Signup.mobileNoRequiredMsg' | translate}}</span>
+                        </span>
+                    </div>
+
                     <div class="form-group">
                         <button [disabled]="!form.valid" class="btn btn-main btn-block rounded" type="submit">
                             {{'Signup.signupBtn' | translate}}</button>
