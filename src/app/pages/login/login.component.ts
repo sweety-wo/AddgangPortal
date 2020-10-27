@@ -2,6 +2,11 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { ResetAccountStateAction } from 'src/app/states/account';
+import { ForgotPasswordFormStateAction, LoginFormSubmitAction } from 'src/app/states/form';
+import { Subject } from 'rxjs';
+import { Store } from '@ngxs/store';
+import { UpdateFormValue } from '@ngxs/form-plugin';
 
 
 @Component({
@@ -13,30 +18,52 @@ import { TranslateService } from '@ngx-translate/core';
 export class LoginComponent {
     public router: Router;
     public form: FormGroup;
-    public email: AbstractControl;
+    public userName: AbstractControl;
     public password: AbstractControl;
+    private ngUnsubscribe = new Subject();
 
-    constructor(router: Router, fb: FormBuilder, public translate: TranslateService) {
+    constructor(
+        router: Router,
+        fb: FormBuilder,
+        public translate: TranslateService,
+        private _store: Store
+    ) {
         this.router = router;
         this.form = fb.group({
-            'email': ['', Validators.compose([Validators.required, emailValidator])],
-            'password': ['', Validators.compose([Validators.required, Validators.minLength(6)])]
+            userName: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
+            password: ['', Validators.compose([Validators.required, Validators.minLength(6)])]
         });
 
-        this.email = this.form.controls['email'];
+        this.userName = this.form.controls['userName'];
         this.password = this.form.controls['password'];
         const lang = localStorage.getItem("language");
-        translate.setDefaultLang(lang)
+        translate.setDefaultLang(lang);
     }
 
     public onSubmit(values: Object): void {
         if (this.form.valid) {
-            console.log(values);
-            this.router.navigate(['pages/access']);
+            this._store.dispatch(new LoginFormSubmitAction());
         }
     }
-    changeLang(lang) {
 
+    private fnResetLoginFormState() {
+        this._store.dispatch(
+            new UpdateFormValue({ value: {}, path: 'form.login' })
+        );
+    }
+
+    public fnForgotPassword() {
+        this._store.dispatch(new ForgotPasswordFormStateAction({ userName: this.userName.value }));
+    }
+
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+        this.fnResetLoginFormState();
+        this._store.dispatch(new ResetAccountStateAction());
+    }
+
+    changeLang(lang) {
         this.translate.setDefaultLang(lang);
         localStorage.setItem("language", lang);
     }
