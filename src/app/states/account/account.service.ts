@@ -15,15 +15,26 @@ export class AccountService {
   }
 
   fnSignIn(payload: AuthModel) {
-    console.log(environment.API_URL + `auth/login`, payload);
-    return this._http.post<AuthTokenModel>(environment.API_URL + `auth/login`, payload);
+    const form = {
+      email: payload.email,
+      password: payload.password
+    }
+    console.log(environment.API_URL + `auth/login`, form);
+    return this._http.post<AuthTokenModel>(environment.API_URL + `auth/login`, form);
   }
 
   fnSignUp(payload: AuthModel) {
-    return this._http.post<AuthTokenModel>(environment.API_URL + `auth/signup`, payload);
+    const form = {
+      email: payload.userName,
+      password: payload.password
+    }
+    console.log(environment.API_URL + `auth/signup`, form);
+    return this._http.post<AuthTokenModel>(environment.API_URL + `auth/signup`, form);
   }
 
   fnForgotPassword(payload: ForgotPassword) {
-    return of([]);
+    console.log(payload);
+   
+    return of(payload)
   }
 }

@@ -4,13 +4,15 @@
     "userName": "Brukernavn",
     "passwordLabel": "Passord",
     "userNameRequiredMsg": "Brukernavn kreves",
-    "userNameInvalidMsg": "Minimum 3 tegn",
+    "userNameInvalidMsg": "Ugyldig brukernavn",
     "passwordRequiredMsg": "Passord er påkrevd",
     "passwordInvalidMsg": "Passordet er ikke langt nok, minimum 6 tegn",
     "keeploginLable": "Hold meg innlogget",
     "fotgotpassLabel": "Glemt passord?",
     "signinBtn": "Logg inn",
-    "signupBtn": "Opprett ny bruker"
+    "signupBtn": "Opprett ny bruker",
+    "submitBtn": "Sende inn",
+    "backtosigninLabel":"Tilbake til innlogging"
   },
   "Signup": {
     "title": "Melde deg på",
@@ -19,11 +21,11 @@
     "passwordLabel": "Passord",
     "confirm_passLabel": "Bekreft Passord",
     "fullName": "For- og mellomnavn",
-    "surName": "Sur Navn",
+    "surName": "Surnavn",
     "DOB": "Fødselsdato",
     "mobileNo": "Mobilnummer",
     "userNameRequiredMsg": "Brukernavn kreves",
-    "userNameInvalidMsg": "Minimum 3 tegn",
+    "userNameInvalidMsg": "Ugyldig brukernavn",
     "emailRequiredMsg": "E-post er obligatorisk",
     "emailInvalidMsg": "Ugyldig epostadresse",
     "passwordRequiredMsg": "Passord er påkrevd",
@@ -31,10 +33,20 @@
     "confirm_passRequiredMsg": "Bekreft passord er påkrevd",
     "conffirm_passInvalidMsg": "Passordet samsvarer ikke",
     "fullNameRequiredMsg": "For- og mellomnavn er obligatorisk",
-    "surNameRequiredMsg": "Sur Navn kreves",
+    "surNameRequiredMsg": "Surnavn kreves",
     "DOBRequiredMsg": "Fødselsdato kreves",
     "mobileNoRequiredMsg": "Mobilnummer kreves",
+    "mobileNoInvalidMsg": "Mobilnummeret må bestå av 10 sifre",
     "signupBtn": "Melde deg på",
     "signinBtn": "Har du allerede en konto? Logg inn!"
+  },
+  "forgot":{
+    "forgotTitle": "Glemt passord?",
+    "userName": "Brukernavn",
+    "fotgotpassLabel": "Glemt passord?",
+    "userNameRequiredMsg": "Brukernavn kreves",
+    "userNameInvalidMsg": "Ugyldig brukernavn",
+    "submitBtn": "Sende inn",
+    "backtosigninLabel":"Tilbake til innlogging"
   }
 }

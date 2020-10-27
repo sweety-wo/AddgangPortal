@@ -88,6 +88,8 @@ export class AccountState {
       console.log(result);
     }, (err) => {
       setState({ ...state, isLoading: false });
+      console.log(err.error.message);
+      
       // this._toastr.error(err.error.message);
     }));
   }

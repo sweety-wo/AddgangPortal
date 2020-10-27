@@ -1,5 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/services/custom/auth-service/auth.service';
 import { AppState } from '../../../app.state';
 import { SidebarService } from '../sidebar/sidebar.service';
@@ -19,12 +20,17 @@ export class NavbarComponent {
     private _state: AppState,
     private _auth: AuthService,
     private _sidebarService: SidebarService,
-    private _router: Router
+    private _router: Router,
+    private translate: TranslateService
   ) {
-    // this._state.subscribe('menu.isCollapsed', (isCollapsed) => {
-    //     this.isMenuCollapsed = isCollapsed;
-    // });
+
   }
+
+  changeLang(lang) {
+    this.translate.setDefaultLang(lang);
+    localStorage.setItem("language", lang);
+  }
+
 
   public closeSubMenus() {
     /* when using <az-sidebar> instead of <az-menu> uncomment this line */

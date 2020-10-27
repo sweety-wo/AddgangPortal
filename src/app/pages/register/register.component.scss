@@ -1,27 +1,25 @@
 @import "../../theme/styles/variables";
-
-.register-container{
-    display: flex;
-    align-items: center;
-    height: 100%;
+.main-container {
     width: 100%;
-    position: absolute;
-    background-image: url('../../../assets/img/app/bg-image.jpg');
+    min-height: 100vh;
+    position: relative;
+    background-image: url("../../../assets/img/app/bg-image.jpg");
     background-position: center;
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: cover;
-    .card{
+}
+.register-container {
+    .card {
         padding: 15px;
-        .btn-link{
-            padding: 0;          
-            &:hover{
+        .btn-link {
+            padding: 0;
+            &:hover {
                 color: $main-color;
             }
         }
-        .terms{
-            font-size:13px;
+        .terms {
+            font-size: 13px;
         }
-       
     }
 }
