@@ -18,6 +18,10 @@ export const routes: Routes = [
     path: 'register', loadChildren: () => import('./pages/register/register.module').then(m => m.RegisterModule),
     canActivate: [NotAuthGuardService]
   },
+  {
+    path: 'forgot-password', loadChildren: () => import('./pages/forgot-password/forgot-password.module').then(m => m.ForgotPasswordModule),
+    canActivate: [NotAuthGuardService]
+  },
   { path: '**', component: ErrorComponent }
 ];
 

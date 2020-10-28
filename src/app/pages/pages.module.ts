@@ -7,7 +7,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
 import { DirectivesModule } from '../theme/directives/directives.module';
-import { PipesModule } from '../theme/pipes/pipes.module'; 
+import { PipesModule } from '../theme/pipes/pipes.module';
 import { PagesRoutingModule } from './pages.routing';
 import { PagesComponent } from './pages.component';
 import { MenuComponent } from '../theme/components/menu/menu.component';
@@ -17,16 +17,18 @@ import { MessagesComponent } from '../theme/components/messages/messages.compone
 import { BreadcrumbComponent } from '../theme/components/breadcrumb/breadcrumb.component';
 import { BackTopComponent } from '../theme/components/back-top/back-top.component';
 import { AccessComponent } from './access/access.component';
+import { SharedModule } from 'src/app/common/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    PerfectScrollbarModule,   
+    SharedModule,
+    PerfectScrollbarModule,
     DirectivesModule,
     PipesModule,
-    PagesRoutingModule 
+    PagesRoutingModule
   ],
-  declarations: [ 
+  declarations: [
     PagesComponent,
     MenuComponent,
     SidebarComponent,
@@ -34,9 +36,9 @@ import { AccessComponent } from './access/access.component';
     MessagesComponent,
     BreadcrumbComponent,
     BackTopComponent,
-    AccessComponent,
+    AccessComponent
   ],
-  providers:[
+  providers: [
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG

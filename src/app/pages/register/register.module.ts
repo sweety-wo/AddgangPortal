@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './register.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { SharedModule } from 'src/app/common/shared/shared.module';
 
 export const routes = [
   { path: '', component: RegisterComponent, pathMatch: 'full' }
@@ -18,9 +19,8 @@ export const routes = [
     NgxsFormPluginModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
-    TranslateModule
+    SharedModule
   ],
   declarations: [RegisterComponent],
-  exports: [TranslateModule]
 })
 export class RegisterModule { }

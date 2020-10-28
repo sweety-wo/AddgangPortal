@@ -29,20 +29,24 @@ export class RegisterComponent implements OnDestroy {
     ) {
         this.router = router;
         this.form = fb.group({
-            userName: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
+            userName: ['', Validators.compose([Validators.required, emailValidator])],
             password: ['', Validators.required],
             confirmPassword: ['', Validators.required],
             fullName: ['', Validators.required],
             surName: ['', Validators.required],
             DOB: ['', Validators.required],
             sex: ['', Validators.required],
-            mobileNo: ['', Validators.required]
+            mobileNo: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])]
         }, { validator: matchingPasswords('password', 'confirmPassword') });
 
         this.form.controls['sex'].setValue(this.defaultSex, { onlySelf: true });
 
         const lang = localStorage.getItem("language");
         translate.setDefaultLang(lang);
+    }
+    changeLang(lang) {
+        this.translate.setDefaultLang(lang);
+        localStorage.setItem("language", lang);
     }
 
     public onSubmit(values: Object): void {
@@ -66,6 +70,14 @@ export class RegisterComponent implements OnDestroy {
         this.ngUnsubscribe.complete();
         this.fnResetSignUpFormState();
         this._store.dispatch(new ResetAccountStateAction());
+    }
+
+    numberOnly(event): boolean {
+        const charCode = (event.which) ? event.which : event.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
     }
 }
 
