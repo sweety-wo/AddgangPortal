@@ -5,11 +5,13 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { AccountState } from './account/account.state';
 import { FormState } from './form/form.state';
 import { UserState } from './user/user.state';
+import { CommonState } from './common/common.state';
 
 const STATES = [
   AccountState,
   FormState,
   UserState,
+  CommonState
 ];
 
 @NgModule({

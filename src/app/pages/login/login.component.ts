@@ -4,9 +4,11 @@ import { FormGroup, FormControl, AbstractControl, FormBuilder, Validators } from
 import { TranslateService } from '@ngx-translate/core';
 import { ResetAccountStateAction } from 'src/app/states/account';
 import { LoginFormSubmitAction } from 'src/app/states/form';
-import { Subject } from 'rxjs';
-import { Store } from '@ngxs/store';
+import { Observable, Subject } from 'rxjs';
+import { Select, Store } from '@ngxs/store';
 import { UpdateFormValue } from '@ngxs/form-plugin';
+import { CommonState } from 'src/app/states/common/common.state';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -16,21 +18,19 @@ import { UpdateFormValue } from '@ngxs/form-plugin';
     styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-    public router: Router;
     public form: FormGroup;
 
     public email: AbstractControl;
     public femail: AbstractControl;
     public password: AbstractControl;
     private ngUnsubscribe = new Subject();
-
+    @Select(CommonState.getState) language: Observable<any>;
     constructor(
-        router: Router,
+        public router: Router,
         public fb: FormBuilder,
         public translate: TranslateService,
         private _store: Store
     ) {
-        this.router = router;
         this.form = fb.group({
             email: ['', Validators.compose([Validators.required, emailValidator])],
             password: ['', Validators.compose([Validators.required, Validators.minLength(6)])]
@@ -39,16 +39,24 @@ export class LoginComponent {
 
         this.email = this.form.controls['email'];
         this.password = this.form.controls['password'];
-        const lang = localStorage.getItem("language");
-        translate.setDefaultLang(lang);
+        // const lang = localStorage.getItem("language");
+        // translate.setDefaultLang(lang);
+    }
+    ngOnInit() {
+        this.language.pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe((response: any) => {
+                if (response.language) {
+                    console.log(response);
+                    this.translate.setDefaultLang(response.language);
+                } else {
+                    this.translate.setDefaultLang("no");
+                }
+            });
     }
 
     public onSubmit(values: Object) {
         if (this.form.valid) {
-            this._store.dispatch(new LoginFormSubmitAction()).subscribe(async (res) => {
-                console.log(res.user.authUser);
-                await localStorage.setItem('user', JSON.stringify(res.user.authUser));
-            });
+            this._store.dispatch(new LoginFormSubmitAction());
         }
     }
 
@@ -69,11 +77,6 @@ export class LoginComponent {
         this.ngUnsubscribe.complete();
         this.fnResetLoginFormState();
         this._store.dispatch(new ResetAccountStateAction())
-    }
-
-    changeLang(lang) {
-        this.translate.setDefaultLang(lang);
-        localStorage.setItem("language", lang);
     }
 
 }

@@ -1,7 +1,12 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { Select, Store } from '@ngxs/store';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/custom/auth-service/auth.service';
+import { setLanguage } from 'src/app/states/common/common.actions';
+import { UserState } from 'src/app/states/user';
 import { AppState } from '../../../app.state';
 import { SidebarService } from '../sidebar/sidebar.service';
 
@@ -13,25 +18,44 @@ import { SidebarService } from '../sidebar/sidebar.service';
   providers: [SidebarService]
 })
 
-export class NavbarComponent {
+export class NavbarComponent implements OnInit, OnDestroy {
   public isMenuCollapsed: boolean = true;
-  userDetails: any;
-
+  public userDetails: any;
+  private ngUnsubscribe = new Subject();
+  @Select(UserState.getAuthUser) user: Observable<any>;
   constructor(
     private _state: AppState,
     private _auth: AuthService,
     private _sidebarService: SidebarService,
     private _router: Router,
-    private translate: TranslateService
+    private translate: TranslateService,
+    public store: Store
   ) {
-    this.userDetails = JSON.parse(localStorage.getItem('user'))
-    console.log('user', this.userDetails);
 
+  }
+
+  ngOnInit() {
+    this.user.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((userObj: any) => {
+        if (userObj) {
+          this.userDetails = userObj;
+          console.log(this.userDetails);
+
+        } else {
+          this.userDetails = null;
+        }
+      });
+  }
+  ngOnDestroy() {
+    if (this.ngUnsubscribe) {
+      this.ngUnsubscribe.next();
+      this.ngUnsubscribe.complete();
+    }
   }
 
   changeLang(lang) {
     this.translate.setDefaultLang(lang);
-    localStorage.setItem("language", lang);
+    this.store.dispatch(new setLanguage(lang))
   }
 
 
@@ -47,7 +71,7 @@ export class NavbarComponent {
 
   fnLogout() {
     this._auth.fnRemoveToken();
-    this._router.navigate(['login']);
+    this._router.navigateByUrl('/login');
   }
 
 }

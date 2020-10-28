@@ -13,7 +13,7 @@ import { AccountService } from './account.service';
 import { AuthTokenModel } from '../../core/models/auth-model';
 import { AuthService } from '../../services/custom/auth-service/auth.service';
 import { ForgotPasswordFormStateAction } from '../form';
-// import { ToastrService } from '../../shared/services/toastr-sevice/toastr.service';
+import { ToastrService } from 'ngx-toastr';
 
 @State<AccountStateModel>({
   name: 'account',
@@ -28,7 +28,7 @@ export class AccountState {
     private _accountService: AccountService,
     private _auth: AuthService,
     private _router: Router,
-    // private _toastr: ToastrService,
+    private _toastr: ToastrService,
     private zone: NgZone
   ) {
   }
@@ -47,16 +47,16 @@ export class AccountState {
       setState({ ...state, isLoading: false });
       if (result && result.token) {
         this._auth.fnSetToken(result.token);
-        this._auth.fnGetAuthUser();
+        this._auth.fnGetAuthUser()
         setState({ ...state, auth: result });
-        // this._toastr.success('You have logged in successfully');
+        this._toastr.success('Login successful');
         this.zone.run(() => {
           this._router.navigate(['/pages']);
         });
       }
     }, (err) => {
       setState({ ...state, isLoading: false });
-      // this._toastr.error(err.error.message);
+      this._toastr.error(err.error.message);
     }));
   }
 
@@ -66,10 +66,11 @@ export class AccountState {
     setState({ ...state, isLoading: true });
     return this._accountService.fnSignUp(payload).pipe(tap((result: any) => {
       setState({ ...state, isLoading: false, auth: result });
+      this._toastr.success('Login successful');
       this._router.navigate(['/login']);
     }, (err) => {
       setState({ ...state, isLoading: false });
-      // this._toastr.error(err.error.message);
+      this._toastr.error(err.error.message);
     }));
   }
 
@@ -89,8 +90,7 @@ export class AccountState {
     }, (err) => {
       setState({ ...state, isLoading: false });
       console.log(err.error.message);
-      
-      // this._toastr.error(err.error.message);
+      this._toastr.error(err.error.message);
     }));
   }
 

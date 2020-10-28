@@ -6,13 +6,12 @@ import { PagesComponent } from './pages.component';
 
 export const routes: Routes = [
     {
-        path: '', 
+        path: '',
         component: PagesComponent,
-        children:[
-            { path:'', redirectTo:'access', pathMatch:'full' },
-            { path: 'access', loadChildren: () => import('./access/access.module').then(m => m.AccessModule), data: { breadcrumb: 'Access' }  },      
+        children: [
+            { path: '', redirectTo: 'form', pathMatch: 'full' },
             { path: 'form', loadChildren: () => import('./form-elements/form-elements.module').then(m => m.FormElementsModule), data: { breadcrumb: 'Form' } },
-            { path: 'profile', loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule), data: { breadcrumb: 'Profile' }  },      
+            { path: 'profile', loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule), data: { breadcrumb: 'Profile' } }
         ]
     }
 ];
