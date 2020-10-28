@@ -70,7 +70,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   fnLogout() {
-    this._auth.fnRemoveToken();
+    this._auth.fnRemoveToken()
     this._router.navigateByUrl('/login');
   }
 

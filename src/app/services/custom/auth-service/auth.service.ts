@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { UniversalStorageService } from '../universal-storage-service/universal-storage.service';
 import * as jwt_decode from 'jwt-decode';
 import { Store } from '@ngxs/store';
-import { GetAuthUserAction } from '../../../states/user';
+import { GetAuthUserAction, ResetUserStateAction } from '../../../states/user';
 import { LogoutAccountAction } from '../../../states/account/account.action';
 
 @Injectable({
@@ -47,5 +47,6 @@ export class AuthService {
     fnRemoveToken() {
         this._cookies.removeItem(AuthService.COOKIE_NAME);
         this._store.dispatch(new LogoutAccountAction());
+        this._store.dispatch(new ResetUserStateAction())
     }
 }
