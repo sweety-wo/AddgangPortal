@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormGroup, FormControl, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ResetAccountStateAction } from 'src/app/states/account';
-import {  LoginFormSubmitAction } from 'src/app/states/form';
+import { LoginFormSubmitAction } from 'src/app/states/form';
 import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { UpdateFormValue } from '@ngxs/form-plugin';
@@ -45,7 +45,10 @@ export class LoginComponent {
 
     public onSubmit(values: Object) {
         if (this.form.valid) {
-            this._store.dispatch(new LoginFormSubmitAction());
+            this._store.dispatch(new LoginFormSubmitAction()).subscribe(async (res) => {
+                console.log(res.user.authUser);
+                await localStorage.setItem('user', JSON.stringify(res.user.authUser));
+            });
         }
     }
 

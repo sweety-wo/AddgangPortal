@@ -15,6 +15,7 @@ import { SidebarService } from '../sidebar/sidebar.service';
 
 export class NavbarComponent {
   public isMenuCollapsed: boolean = true;
+  userDetails: any;
 
   constructor(
     private _state: AppState,
@@ -23,6 +24,8 @@ export class NavbarComponent {
     private _router: Router,
     private translate: TranslateService
   ) {
+    this.userDetails = JSON.parse(localStorage.getItem('user'))
+    console.log('user', this.userDetails);
 
   }
 
