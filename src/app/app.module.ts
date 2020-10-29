@@ -18,6 +18,7 @@ import { UniversalStorageService } from './services/custom/universal-storage-ser
 import { AuthGuardService } from './services/custom/auth-gaurd-service/auth-guard.service';
 import { NotAuthGuardService } from './services/custom/no-auth-guard-service/no-auth-guard.service';
 import { AppState } from './app.state';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 
 export function init(startup: StartupService): Function {
   return (): Promise<any> => startup.init();
@@ -48,7 +49,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
+    NgxsReduxDevtoolsPluginModule.forRoot()
   ],
   providers: [
     { provide: APP_INITIALIZER, useFactory: init, multi: true, deps: [StartupService] },

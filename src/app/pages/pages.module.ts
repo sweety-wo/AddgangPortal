@@ -16,7 +16,6 @@ import { NavbarComponent } from '../theme/components/navbar/navbar.component';
 import { MessagesComponent } from '../theme/components/messages/messages.component';
 import { BreadcrumbComponent } from '../theme/components/breadcrumb/breadcrumb.component';
 import { BackTopComponent } from '../theme/components/back-top/back-top.component';
-import { AccessComponent } from './access/access.component';
 import { SharedModule } from 'src/app/common/shared/shared.module';
 
 @NgModule({
@@ -35,8 +34,7 @@ import { SharedModule } from 'src/app/common/shared/shared.module';
     NavbarComponent,
     MessagesComponent,
     BreadcrumbComponent,
-    BackTopComponent,
-    AccessComponent
+    BackTopComponent
   ],
   providers: [
     {

@@ -1,11 +1,11 @@
-import {Action, Selector, State, StateContext} from '@ngxs/store';
-import {catchError, tap} from 'rxjs/operators';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { catchError, tap } from 'rxjs/operators';
 
 import {
-  GetAuthUserAction
+    GetAuthUserAction, ResetUserStateAction
 } from './user.action';
-import {UserService} from './user.service';
-import {Injectable} from '@angular/core';
+import { UserService } from './user.service';
+import { Injectable } from '@angular/core';
 import { UserStateModel, DefaultUserStateModel } from './user.model';
 
 @State<UserStateModel>({
@@ -27,10 +27,19 @@ export class UserState {
     }
 
     @Action(GetAuthUserAction)
-    GetAuthUserAction({getState, patchState}: StateContext<UserStateModel>, {id}: GetAuthUserAction) {
+    GetAuthUserAction({ getState, patchState }: StateContext<UserStateModel>, { id }: GetAuthUserAction) {
         return this._userService.getUser(id).pipe(tap((result) => {
             const state = getState();
-            patchState({authUser: result});
+            patchState({ authUser: result });
         }));
+    }
+
+    @Action(ResetUserStateAction)
+    ResetUserStateAction({ getState, setState }: StateContext<UserStateModel>) {
+        const state = getState();
+        setState({
+            ...state,
+            authUser: null,
+        });
     }
 }

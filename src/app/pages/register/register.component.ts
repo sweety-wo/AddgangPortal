@@ -1,12 +1,14 @@
-import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ResetAccountStateAction } from '../../states/account';
 import { SignUpFormSubmitAction } from '../../states/form';
-import { Subject } from 'rxjs';
-import { Store } from '@ngxs/store';
+import { Observable, Subject } from 'rxjs';
+import { Select, Store } from '@ngxs/store';
 import { UpdateFormValue } from '@ngxs/form-plugin';
+import { CommonState } from 'src/app/states/common/common.state';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'az-register',
@@ -14,13 +16,13 @@ import { UpdateFormValue } from '@ngxs/form-plugin';
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnDestroy {
+export class RegisterComponent implements OnInit, OnDestroy {
     public router: Router;
     public form: FormGroup;
     private ngUnsubscribe = new Subject();
     public sex = [{ name: 'Male', value: 'male' }, { name: 'Female', value: 'female' }];
     defaultSex = 'male';
-
+    @Select(CommonState.getState) language: Observable<any>;
     constructor(
         router: Router,
         fb: FormBuilder,
@@ -41,12 +43,20 @@ export class RegisterComponent implements OnDestroy {
 
         this.form.controls['sex'].setValue(this.defaultSex, { onlySelf: true });
 
-        const lang = localStorage.getItem("language");
-        translate.setDefaultLang(lang);
+        // const lang = localStorage.getItem("language");
+        // translate.setDefaultLang(lang);
     }
-    changeLang(lang) {
-        this.translate.setDefaultLang(lang);
-        localStorage.setItem("language", lang);
+
+    ngOnInit() {
+        this.language.pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe((response: any) => {
+                if (response.language) {
+                    console.log(response);
+                    this.translate.setDefaultLang(response.language);
+                } else {
+                    this.translate.setDefaultLang("no");
+                }
+            });
     }
 
     public onSubmit(values: Object): void {
