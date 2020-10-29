@@ -51,7 +51,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.language.pipe(takeUntil(this.ngUnsubscribe))
             .subscribe((response: any) => {
                 if (response.language) {
-                    console.log(response);
                     this.translate.setDefaultLang(response.language);
                 } else {
                     this.translate.setDefaultLang("no");

@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { ResetAccountStateAction } from 'src/app/states/account';
+import { AccountState, ResetAccountStateAction } from 'src/app/states/account';
 import { LoginFormSubmitAction } from 'src/app/states/form';
 import { Observable, Subject } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
@@ -23,7 +23,10 @@ export class LoginComponent {
     public email: AbstractControl;
     public femail: AbstractControl;
     public password: AbstractControl;
+    public loadingPresent: boolean = false;
     private ngUnsubscribe = new Subject();
+    @Select(AccountState.getIsLoading) isLoading: Observable<any>;
+
     @Select(CommonState.getState) language: Observable<any>;
     constructor(
         public router: Router,
@@ -46,7 +49,6 @@ export class LoginComponent {
         this.language.pipe(takeUntil(this.ngUnsubscribe))
             .subscribe((response: any) => {
                 if (response.language) {
-                    console.log(response);
                     this.translate.setDefaultLang(response.language);
                 } else {
                     this.translate.setDefaultLang("no");
@@ -54,9 +56,13 @@ export class LoginComponent {
             });
     }
 
-    public onSubmit(values: Object) {
+    public async onSubmit(values: Object) {
         if (this.form.valid) {
-            this._store.dispatch(new LoginFormSubmitAction());
+            this.loadingPresent = true;
+            await this._store.dispatch(new LoginFormSubmitAction());
+            await this.isLoading.subscribe((res) => this.loadingPresent = res);
+            console.log(this.loadingPresent);
+
         }
     }
 

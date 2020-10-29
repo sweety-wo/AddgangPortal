@@ -6,6 +6,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/custom/auth-service/auth.service';
 import { setLanguage } from 'src/app/states/common/common.actions';
+import { CommonState } from 'src/app/states/common/common.state';
 import { UserState } from 'src/app/states/user';
 import { AppState } from '../../../app.state';
 import { SidebarService } from '../sidebar/sidebar.service';
@@ -23,6 +24,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public userDetails: any;
   private ngUnsubscribe = new Subject();
   @Select(UserState.getAuthUser) user: Observable<any>;
+  @Select(CommonState.getState) language: Observable<any>;
   constructor(
     private _state: AppState,
     private _auth: AuthService,
@@ -40,9 +42,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
         if (userObj) {
           this.userDetails = userObj;
           console.log(this.userDetails);
-
         } else {
           this.userDetails = null;
+        }
+      });
+    this.language.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((response: any) => {
+        if (response.language) {
+          this.translate.setDefaultLang(response.language);
+        } else {
+          this.translate.setDefaultLang("no");
         }
       });
   }

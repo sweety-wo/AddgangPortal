@@ -45,6 +45,8 @@ export class AccountState {
     setState({ ...state, isLoading: true });
     return this._accountService.fnSignIn(payload).pipe(tap((result: AuthTokenModel) => {
       setState({ ...state, isLoading: false });
+      console.log('login', result);
+
       if (result && result.token) {
         this._auth.fnSetToken(result.token);
         this._auth.fnGetAuthUser()
@@ -65,6 +67,8 @@ export class AccountState {
     const state = getState();
     setState({ ...state, isLoading: true });
     return this._accountService.fnSignUp(payload).pipe(tap((result: any) => {
+      console.log('signup', result);
+
       setState({ ...state, isLoading: false, auth: result });
       this._toastr.success('Login successful');
       this._router.navigate(['/login']);
@@ -86,7 +90,7 @@ export class AccountState {
     const state = getState();
     setState({ ...state, auth: null });
     return this._accountService.fnForgotPassword(payload).pipe(tap((result: any) => {
-      console.log(result);
+      console.log('forgot', result);
     }, (err) => {
       setState({ ...state, isLoading: false });
       console.log(err.error.message);
