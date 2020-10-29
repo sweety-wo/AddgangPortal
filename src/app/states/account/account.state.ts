@@ -14,6 +14,7 @@ import { AuthTokenModel } from '../../core/models/auth-model';
 import { AuthService } from '../../services/custom/auth-service/auth.service';
 import { ForgotPasswordFormStateAction } from '../form';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @State<AccountStateModel>({
   name: 'account',
@@ -29,7 +30,8 @@ export class AccountState {
     private _auth: AuthService,
     private _router: Router,
     private _toastr: ToastrService,
-    private zone: NgZone
+    private zone: NgZone,
+    public loader: NgxSpinnerService
   ) {
   }
 
@@ -46,17 +48,18 @@ export class AccountState {
     return this._accountService.fnSignIn(payload).pipe(tap((result: AuthTokenModel) => {
       setState({ ...state, isLoading: false });
       console.log('login', result);
-
       if (result && result.token) {
         this._auth.fnSetToken(result.token);
         this._auth.fnGetAuthUser()
         setState({ ...state, auth: result });
         this._toastr.success('Login successful');
         this.zone.run(() => {
+          this.loader.hide();
           this._router.navigate(['/pages']);
         });
       }
     }, (err) => {
+      this.loader.hide();
       setState({ ...state, isLoading: false });
       this._toastr.error(err.error.message);
     }));
@@ -68,11 +71,12 @@ export class AccountState {
     setState({ ...state, isLoading: true });
     return this._accountService.fnSignUp(payload).pipe(tap((result: any) => {
       console.log('signup', result);
-
       setState({ ...state, isLoading: false, auth: result });
-      this._toastr.success('Login successful');
+      this.loader.hide();
+      this._toastr.success('Registration successful');
       this._router.navigate(['/login']);
     }, (err) => {
+      this.loader.hide();
       setState({ ...state, isLoading: false });
       this._toastr.error(err.error.message);
     }));
@@ -82,6 +86,7 @@ export class AccountState {
   LogoutAccountAction({ getState, setState }: StateContext<AccountStateModel>) {
     const state = getState();
     setState({ ...state, auth: null });
+    this.loader.hide();
   }
 
   @Action(ForgotPasswordFormStateAction)
@@ -89,6 +94,7 @@ export class AccountState {
     { payload }: ForgotPasswordFormStateAction) {
     const state = getState();
     setState({ ...state, auth: null });
+    this.loader.hide();
     return this._accountService.fnForgotPassword(payload).pipe(tap((result: any) => {
       console.log('forgot', result);
     }, (err) => {

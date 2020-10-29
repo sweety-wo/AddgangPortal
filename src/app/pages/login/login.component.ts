@@ -9,6 +9,7 @@ import { Select, Store } from '@ngxs/store';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { CommonState } from 'src/app/states/common/common.state';
 import { takeUntil } from 'rxjs/operators';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 @Component({
@@ -32,7 +33,8 @@ export class LoginComponent {
         public router: Router,
         public fb: FormBuilder,
         public translate: TranslateService,
-        private _store: Store
+        private _store: Store,
+        public loader: NgxSpinnerService
     ) {
         this.form = fb.group({
             email: ['', Validators.compose([Validators.required, emailValidator])],
@@ -58,11 +60,8 @@ export class LoginComponent {
 
     public async onSubmit(values: Object) {
         if (this.form.valid) {
-            this.loadingPresent = true;
+            this.loader.show()
             await this._store.dispatch(new LoginFormSubmitAction());
-            await this.isLoading.subscribe((res) => this.loadingPresent = res);
-            console.log(this.loadingPresent);
-
         }
     }
 

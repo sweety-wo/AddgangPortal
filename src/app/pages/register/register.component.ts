@@ -9,6 +9,7 @@ import { Select, Store } from '@ngxs/store';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { CommonState } from 'src/app/states/common/common.state';
 import { takeUntil } from 'rxjs/operators';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
     selector: 'az-register',
@@ -27,7 +28,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
         router: Router,
         fb: FormBuilder,
         public translate: TranslateService,
-        private _store: Store
+        private _store: Store,
+        public loader: NgxSpinnerService
     ) {
         this.router = router;
         this.form = fb.group({
@@ -60,6 +62,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     public onSubmit(values: Object): void {
         if (this.form.valid) {
+            this.loader.show();
             this._store.dispatch(new SignUpFormSubmitAction());
         }
     }
