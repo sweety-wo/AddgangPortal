@@ -27,12 +27,11 @@
                     <li class="user-info">
                         <img src="assets/img/users/user.jpg" alt="user-img" class="img-circle user-img">
                         <p>
-                            Emilio Verdines - Web Developer
-                            <small>Member since Dec. 2015</small>
+                            {{userDetails? userDetails.FirstName+' '+ userDetails.LastName:''}}
                         </p>
                     </li>
-                    <a style="cursor: pointer;" class="dropdown-item" routerLink="/pages/profile/projects"><i
-                            class="fa fa-user"></i>Profile</a>
+                    <!-- <a style="cursor: pointer;" class="dropdown-item" routerLink="/pages/profile/projects"><i
+                            class="fa fa-user"></i>Profile</a> -->
                     <div class="dropdown-divider"></div>
                     <a style="cursor: pointer;" class="dropdown-item" (click)="fnLogout()"><i
                             class="fa fa-power-off"></i>
