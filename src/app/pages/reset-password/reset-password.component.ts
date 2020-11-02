@@ -8,6 +8,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CommonState } from 'src/app/states/common/common.state';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'az-reset-password',
@@ -26,6 +27,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     public fb: FormBuilder,
     public translate: TranslateService,
     private _store: Store,
+    private toastr: ToastrService,
     private activatedRoute: ActivatedRoute,
     public loader: NgxSpinnerService
   ) {
@@ -33,12 +35,13 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     this.activatedRoute.queryParams.subscribe(params => {
       let code = params['code'];
       if (!code) {
-        this.router.navigate(['**'])
+        this.toastr.error("Reset password code is invalid");
+        this.router.navigate(['login'])
       }
     });
 
     this.form = fb.group({
-      email: ['aniruddh@gmail.com'],
+      email: ['demo@gmail.com'],
       password: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
       confirmPassword: ['', Validators.compose([Validators.required, Validators.minLength(6)])]
     }, { validator: matchingPasswords('password', 'confirmPassword') });

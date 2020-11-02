@@ -26,12 +26,11 @@ export class FormState {
   }
 
   @Action(LoginFormSubmitAction)
-  LoginFormSubmitAction({ getState }: StateContext<any>) {
+  LoginFormSubmitAction({ getState }: StateContext<any>, { payload }: LoginFormSubmitAction) {
+
     const state: FormStateModel = getState();
     console.log(state);
-    if (state && state.login && state.login.model) {
-      this._store.dispatch(new LoginAction(state.login.model));
-    }
+    this._store.dispatch(new LoginAction(payload));
   }
 
   @Action(SignUpFormSubmitAction)

@@ -14,6 +14,7 @@ import { AccountService } from './account.service';
 import { AuthTokenModel } from '../../core/models/auth-model';
 import { AuthService } from '../../services/custom/auth-service/auth.service';
 import { ForgotPasswordFormStateAction, ResetPasswordFormStateAction } from '../form';
+import { setUser } from 'src/app/states/common/common.actions';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 
@@ -51,13 +52,18 @@ export class AccountState {
       console.log('login', result);
       if (result) {
         // this._auth.fnSetToken('true');
-        this._auth.fnGetAuthUser()
+        // this._auth.fnGetAuthUser()
+        this._store.dispatch(new setUser(result))
         setState({ ...state, auth: result });
         this._toastr.success('Login successful');
         this.zone.run(() => {
           this.loader.hide();
           this._router.navigate(['/pages']);
         });
+      }
+      else {
+        this.loader.hide();
+        this._toastr.error('Something went wrong.');
       }
     }, (err) => {
       this.loader.hide();
@@ -70,7 +76,6 @@ export class AccountState {
     const state = getState();
     setState({ ...state, isLoading: true });
     return this._accountService.fnSignUp(payload).pipe(tap((result: any) => {
-      console.log('signup', result);
       setState({ ...state, isLoading: false, auth: result });
       this.loader.hide();
       this._toastr.success('Registration successful');
@@ -94,9 +99,15 @@ export class AccountState {
     const state = getState();
     setState({ ...state, auth: null });
     return this._accountService.fnForgotPassword(payload).pipe(tap((result: any) => {
-      this.loader.hide();
-      this._toastr.success('Email sent successfully');
-      this._router.navigate(['/login']);
+      if (result) {
+        this.loader.hide();
+        this._toastr.success('Email sent successfully');
+        this._router.navigate(['/login']);
+      }
+      else {
+        this.loader.hide();
+        this._toastr.error('Something went wrong.');
+      }
     }, (err) => {
       this.loader.hide();
       setState({ ...state, isLoading: false });
@@ -111,9 +122,14 @@ export class AccountState {
     setState({ ...state, auth: null });
     return this._accountService.fnResetPassword(payload)
       .pipe(tap((result: any) => {
-        this.loader.hide();
-        this._toastr.success('Password reset successfully');
-        console.log(result);
+        if (result) {
+          this.loader.hide();
+          this._toastr.success('Password reset successfully');
+          console.log(result);
+        } else {
+          this.loader.hide();
+          this._toastr.error('Something went wrong.');
+        }
       }, (err) => {
         this.loader.hide();
         setState({ ...state, isLoading: false });

@@ -8,6 +8,7 @@ import { UpdateFormValue } from '@ngxs/form-plugin';
 import { CommonState } from 'src/app/states/common/common.state';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 
@@ -25,7 +26,8 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   constructor(public fb: FormBuilder,
     public _store: Store,
     public router: Router,
-    public translate: TranslateService
+    public translate: TranslateService,
+    public loader: NgxSpinnerService
   ) {
     this.form = this.fb.group({
       email: ['', Validators.compose([Validators.required, emailValidator])],
@@ -50,13 +52,10 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   }
 
   public onEmailSubmit(value: Object) {
-    console.log(this.form);
-
     if (this.form.valid) {
-      this._store.dispatch(new ForgotPasswordFormStateAction(this.form.value)).subscribe((res: any) => {
-        this.form.reset();
-        // this.isForgot = false;
-      })
+      this.loader.show()
+      this._store.dispatch(new ForgotPasswordFormStateAction(this.form.value));
+      this.form.reset();
     }
   }
 

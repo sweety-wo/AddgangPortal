@@ -23,7 +23,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public isMenuCollapsed: boolean = true;
   public userDetails: any;
   private ngUnsubscribe = new Subject();
-  @Select(UserState.getAuthUser) user: Observable<any>;
   @Select(CommonState.getState) language: Observable<any>;
   constructor(
     private _state: AppState,
@@ -37,21 +36,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.user.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((userObj: any) => {
-        if (userObj) {
-          this.userDetails = userObj;
-          console.log(this.userDetails);
-        } else {
-          this.userDetails = null;
-        }
-      });
     this.language.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((response: any) => {
         if (response.language) {
           this.translate.setDefaultLang(response.language);
         } else {
           this.translate.setDefaultLang("no");
+        }
+        if (response.user) {
+          this.userDetails = response.user;
         }
       });
   }

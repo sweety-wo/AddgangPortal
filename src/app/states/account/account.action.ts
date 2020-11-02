@@ -3,7 +3,7 @@ import { AuthModel } from '../../core/models/auth-model';
 export class LoginAction {
   static readonly type = '[Account] LoginAction';
 
-  constructor(public payload: AuthModel) { }
+  constructor(public payload: any) { }
 }
 
 export class SignUpAction {

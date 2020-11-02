@@ -62,7 +62,7 @@ export class LoginComponent {
 
         if (this.form.valid) {
             this.loader.show()
-            await this._store.dispatch(new LoginFormSubmitAction());
+            await this._store.dispatch(new LoginFormSubmitAction(this.form.value));
         }
     }
 
