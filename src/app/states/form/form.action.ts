@@ -7,6 +7,12 @@ export class LoginFormSubmitAction {
   }
 }
 
+export class ResetPasswordFormStateAction {
+  static readonly type = '[Form] ResetFormSubmitAction';
+
+  constructor() {
+  }
+}
 export class SignUpFormSubmitAction {
   static readonly type = '[Form] SignUpFormSubmitAction';
 

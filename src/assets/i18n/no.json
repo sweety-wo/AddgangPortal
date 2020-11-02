@@ -51,5 +51,19 @@
     "userNameInvalidMsg": "Ugyldig brukernavn",
     "submitBtn": "Sende inn",
     "backtosigninLabel": "Tilbake til innlogging"
+  },
+  "resetPassword": {
+    "title": "Tilbakestille Passord",
+    "label": "Her kan du søke om tilgang til en eller flere av Norges sider",
+    "userName": "Brukernavn",
+    "passwordLabel": "Passord",
+    "confirm_passLabel": "Bekreft Passord",
+    "userNameRequiredMsg": "Brukernavn kreves",
+    "userNameInvalidMsg": "Ugyldig brukernavn",
+    "passwordRequiredMsg": "Passord er påkrevd",
+    "passwordInvalidMsg": "Passordet er ikke langt nok, minimum 6 tegn",
+    "confirm_passRequiredMsg": "Bekreft passord er påkrevd",
+    "conffirm_passInvalidMsg": "Passordet samsvarer ikke",
+    "submitBtn": "Sende inn"
   }
 }

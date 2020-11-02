@@ -5,6 +5,7 @@ import { tap } from 'rxjs/operators';
 import {
   LoginAction,
   LogoutAccountAction, ResetAccountStateAction,
+  ResetPasswordAction,
   SignUpAction,
 } from './account.action';
 import { AccountStateModel, DefaultAccountStateModel } from './account.model';
@@ -12,7 +13,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { AccountService } from './account.service';
 import { AuthTokenModel } from '../../core/models/auth-model';
 import { AuthService } from '../../services/custom/auth-service/auth.service';
-import { ForgotPasswordFormStateAction } from '../form';
+import { ForgotPasswordFormStateAction, ResetPasswordFormStateAction } from '../form';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 
@@ -48,8 +49,8 @@ export class AccountState {
     return this._accountService.fnSignIn(payload).pipe(tap((result: AuthTokenModel) => {
       setState({ ...state, isLoading: false });
       console.log('login', result);
-      if (result && result.token) {
-        this._auth.fnSetToken(result.token);
+      if (result) {
+        // this._auth.fnSetToken('true');
         this._auth.fnGetAuthUser()
         setState({ ...state, auth: result });
         this._toastr.success('Login successful');
@@ -61,7 +62,6 @@ export class AccountState {
     }, (err) => {
       this.loader.hide();
       setState({ ...state, isLoading: false });
-      this._toastr.error(err.error.message);
     }));
   }
 
@@ -78,7 +78,6 @@ export class AccountState {
     }, (err) => {
       this.loader.hide();
       setState({ ...state, isLoading: false });
-      this._toastr.error(err.error.message);
     }));
   }
 
@@ -94,14 +93,32 @@ export class AccountState {
     { payload }: ForgotPasswordFormStateAction) {
     const state = getState();
     setState({ ...state, auth: null });
-    this.loader.hide();
     return this._accountService.fnForgotPassword(payload).pipe(tap((result: any) => {
-      console.log('forgot', result);
+      this.loader.hide();
+      this._toastr.success('Email sent successfully');
+      this._router.navigate(['/login']);
     }, (err) => {
+      this.loader.hide();
       setState({ ...state, isLoading: false });
       console.log(err.error.message);
-      this._toastr.error(err.error.message);
     }));
+  }
+
+  @Action(ResetPasswordAction)
+  ResetPasswordAction({ getState, setState }: StateContext<AccountStateModel>,
+    { payload }: ResetPasswordAction) {
+    const state = getState();
+    setState({ ...state, auth: null });
+    return this._accountService.fnResetPassword(payload)
+      .pipe(tap((result: any) => {
+        this.loader.hide();
+        this._toastr.success('Password reset successfully');
+        console.log(result);
+      }, (err) => {
+        this.loader.hide();
+        setState({ ...state, isLoading: false });
+        console.log(err.error.message);
+      }));
   }
 
   @Action(ResetAccountStateAction)

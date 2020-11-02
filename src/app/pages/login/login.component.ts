@@ -20,7 +20,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class LoginComponent {
     public form: FormGroup;
-
     public email: AbstractControl;
     public femail: AbstractControl;
     public password: AbstractControl;
@@ -59,6 +58,8 @@ export class LoginComponent {
     }
 
     public async onSubmit(values: Object) {
+        console.log(this.form);
+
         if (this.form.valid) {
             this.loader.show()
             await this._store.dispatch(new LoginFormSubmitAction());

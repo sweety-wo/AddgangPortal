@@ -51,5 +51,19 @@
     "userNameInvalidMsg": "Invalid username",
     "submitBtn": "Submit",
     "backtosigninLabel": "Back to Login"
+  },
+  "resetPassword": {
+    "title": "Reset Password",
+    "label": "Here you can apply for access to one or more of Norway's sites",
+    "userName": "Username",
+    "passwordLabel": "Password",
+    "confirm_passLabel": "Confirm Password",
+    "userNameRequiredMsg": "Username is required",
+    "userNameInvalidMsg": "Invalid username",
+    "passwordRequiredMsg": "Password is required",
+    "passwordInvalidMsg": "Password isn't long enough, minimum of 6 characters",
+    "confirm_passRequiredMsg": "Confirm Password is required",
+    "conffirm_passInvalidMsg": "Password is not matching",
+    "submitBtn": "Submit"
   }
 }

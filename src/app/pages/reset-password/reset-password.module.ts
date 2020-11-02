@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RegisterComponent } from './register.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { ResetPasswordComponent } from './reset-password.component'
+import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/common/shared/shared.module';
 
 export const routes = [
-  { path: '', component: RegisterComponent, pathMatch: 'full' }
+  { path: '', component: ResetPasswordComponent, pathMatch: 'full' }
 ];
 
 
@@ -19,8 +18,8 @@ export const routes = [
     NgxsFormPluginModule,
     ReactiveFormsModule,
     SharedModule,
-    RouterModule.forChild(routes),
+    RouterModule.forChild(routes)
   ],
-  declarations: [RegisterComponent],
+  declarations: [ResetPasswordComponent]
 })
-export class RegisterModule { }
+export class ResetPasswordModule { }

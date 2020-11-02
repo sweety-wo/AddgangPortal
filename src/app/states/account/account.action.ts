@@ -11,6 +11,11 @@ export class SignUpAction {
 
   constructor(public payload: AuthModel) { }
 }
+export class ResetPasswordAction {
+  static readonly type = '[Account] ResetPasswordAction';
+
+  constructor(public payload: AuthModel) { }
+}
 
 export class LogoutAccountAction {
   static readonly type = '[Account] LogoutAccountAction';

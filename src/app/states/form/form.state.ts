@@ -6,13 +6,12 @@ import {
   ForgotPasswordFormStateAction,
   LoginFormSubmitAction,
   ResetFormStateAction,
+  ResetPasswordFormStateAction,
   SignUpFormSubmitAction,
 } from './form.action';
 import { Injectable } from '@angular/core';
 import { FormStateModel, DefaultFormStateModel } from './form.model';
-import { LoginAction, SignUpAction } from '../account/account.action';
-import { tap } from 'rxjs/operators';
-import { ForgotPassword } from 'src/app/core/models/user-model';
+import { LoginAction, SignUpAction, ResetPasswordAction } from '../account/account.action';
 
 @State<FormStateModel>({
   name: 'form',
@@ -46,6 +45,19 @@ export class FormState {
         delete model.confirmPassword;
       }
       this._store.dispatch(new SignUpAction(model));
+    }
+  }
+  @Action(ResetPasswordFormStateAction)
+  ResetPasswordFormStateAction({ getState }: StateContext<any>) {
+    const state = getState();
+    console.log(state);
+    if (state && state.resetPassword && state.resetPassword.model) {
+      const model: any = state.resetPassword.model;
+
+      if (model.confirmPassword) {
+        delete model.confirmPassword;
+      }
+      this._store.dispatch(new ResetPasswordAction(model));
     }
   }
 
