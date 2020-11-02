@@ -1,6 +1,7 @@
 {
   "Login": {
     "title": "Login",
+    "label": "Here you can apply for access to one or more of Norway's sites",
     "userName": "Username",
     "passwordLabel": "Password",
     "userNameRequiredMsg": "Username is required",
@@ -11,11 +12,12 @@
     "fotgotpassLabel": "Forgot password?",
     "signinBtn": "Sign in",
     "signupBtn": "Create New User",
-    "submitBtn":"Submit",
-    "backtosigninLabel":"Back to Login"
+    "submitBtn": "Submit",
+    "backtosigninLabel": "Back to Login"
   },
   "Signup": {
     "title": "Sign Up",
+    "label": "Here you can apply for access to one or more of Norway's sites",
     "userNameLabel": "Username",
     "emailLabel": "Email",
     "passwordLabel": "Password",
@@ -40,13 +42,14 @@
     "signupBtn": "Sign Up",
     "signinBtn": "Already have an account? Sign in!"
   },
-  "forgot":{
+  "forgot": {
     "forgotTitle": "Forgot password?",
+    "label": "Here you can apply for access to one or more of Norway's sites",
     "userName": "Username",
     "fotgotpassLabel": "Forgot password?",
     "userNameRequiredMsg": "Username is required",
     "userNameInvalidMsg": "Invalid username",
-    "submitBtn":"Submit",
-    "backtosigninLabel":"Back to Login"
+    "submitBtn": "Submit",
+    "backtosigninLabel": "Back to Login"
   }
 }

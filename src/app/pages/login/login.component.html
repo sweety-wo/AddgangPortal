@@ -1,7 +1,7 @@
 <div class="main-container">
     <az-header></az-header>
-    <div class="login-container">
-        <div class="col-xl-4 col-md-6 col-10 offset-7">
+    <div class="login-container d-flex flex-row-reverse">
+        <div class="col-xl-4 pr-5 mr-5">
             <div class="card">
                 <div class="card-body text-center">
                     <h2 class="card-title">{{'Login.title' | translate}}</h2>
@@ -26,11 +26,11 @@
                                 {{'Login.passwordInvalidMsg' | translate}}</span>
                         </div>
                         <div class="form-group d-flex justify-content-between">
-                            <div class="custom-control custom-checkbox">
+                            <!-- <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input checkbox-main" id="login-keep">
                                 <label class="custom-control-label"
                                     for="login-keep">{{'Login.keeploginLable' | translate}}</label>
-                            </div>
+                            </div> -->
                             <a class="btn btn-link forgot transition pull-right" (click)="fnForgotPassword()"
                                 href="javascript:void(0);">
                                 {{'Login.fotgotpassLabel' | translate}}</a>
@@ -44,6 +44,14 @@
                                 {{'Login.signupBtn' | translate}}</button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+        <div class="pr-5 mr-5 ">
+            <div class="bg-transparent text-light text-wrap mr-5">
+                <img src="assets/img/app/image3.png" width="350" alt="">
+                <div style="background-color:rgba(0,0,0,0.6);width: 350px;" class="p-3">
+                    {{'Login.label' | translate}}
                 </div>
             </div>
         </div>

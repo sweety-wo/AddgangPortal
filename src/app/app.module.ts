@@ -19,6 +19,7 @@ import { AuthGuardService } from './services/custom/auth-gaurd-service/auth-guar
 import { NotAuthGuardService } from './services/custom/no-auth-guard-service/no-auth-guard.service';
 import { AppState } from './app.state';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 export function init(startup: StartupService): Function {
   return (): Promise<any> => startup.init();
@@ -43,6 +44,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ToastrModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
+    NgxSpinnerModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

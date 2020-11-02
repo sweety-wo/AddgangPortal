@@ -2,13 +2,14 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { ResetAccountStateAction } from 'src/app/states/account';
+import { AccountState, ResetAccountStateAction } from 'src/app/states/account';
 import { LoginFormSubmitAction } from 'src/app/states/form';
 import { Observable, Subject } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { CommonState } from 'src/app/states/common/common.state';
 import { takeUntil } from 'rxjs/operators';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 @Component({
@@ -23,13 +24,17 @@ export class LoginComponent {
     public email: AbstractControl;
     public femail: AbstractControl;
     public password: AbstractControl;
+    public loadingPresent: boolean = false;
     private ngUnsubscribe = new Subject();
+    @Select(AccountState.getIsLoading) isLoading: Observable<any>;
+
     @Select(CommonState.getState) language: Observable<any>;
     constructor(
         public router: Router,
         public fb: FormBuilder,
         public translate: TranslateService,
-        private _store: Store
+        private _store: Store,
+        public loader: NgxSpinnerService
     ) {
         this.form = fb.group({
             email: ['', Validators.compose([Validators.required, emailValidator])],
@@ -46,7 +51,6 @@ export class LoginComponent {
         this.language.pipe(takeUntil(this.ngUnsubscribe))
             .subscribe((response: any) => {
                 if (response.language) {
-                    console.log(response);
                     this.translate.setDefaultLang(response.language);
                 } else {
                     this.translate.setDefaultLang("no");
@@ -54,9 +58,10 @@ export class LoginComponent {
             });
     }
 
-    public onSubmit(values: Object) {
+    public async onSubmit(values: Object) {
         if (this.form.valid) {
-            this._store.dispatch(new LoginFormSubmitAction());
+            this.loader.show()
+            await this._store.dispatch(new LoginFormSubmitAction());
         }
     }
 

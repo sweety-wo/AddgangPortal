@@ -1,6 +1,7 @@
 {
   "Login": {
     "title": "Logg Inn",
+    "label": "Her kan du søke om tilgang til en eller flere av Norges sider",
     "userName": "Brukernavn",
     "passwordLabel": "Passord",
     "userNameRequiredMsg": "Brukernavn kreves",
@@ -12,10 +13,11 @@
     "signinBtn": "Logg inn",
     "signupBtn": "Opprett ny bruker",
     "submitBtn": "Sende inn",
-    "backtosigninLabel":"Tilbake til innlogging"
+    "backtosigninLabel": "Tilbake til innlogging"
   },
   "Signup": {
     "title": "Melde deg på",
+    "label": "Her kan du søke om tilgang til en eller flere av Norges sider",
     "userNameLabel": "Brukernavn",
     "emailLabel": "E-post",
     "passwordLabel": "Passord",
@@ -40,13 +42,14 @@
     "signupBtn": "Melde deg på",
     "signinBtn": "Har du allerede en konto? Logg inn!"
   },
-  "forgot":{
+  "forgot": {
     "forgotTitle": "Glemt passord?",
+    "label": "Her kan du søke om tilgang til en eller flere av Norges sider",
     "userName": "Brukernavn",
     "fotgotpassLabel": "Glemt passord?",
     "userNameRequiredMsg": "Brukernavn kreves",
     "userNameInvalidMsg": "Ugyldig brukernavn",
     "submitBtn": "Sende inn",
-    "backtosigninLabel":"Tilbake til innlogging"
+    "backtosigninLabel": "Tilbake til innlogging"
   }
 }
