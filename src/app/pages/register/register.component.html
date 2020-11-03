@@ -1,7 +1,16 @@
 <div class="main-container">
     <az-header></az-header>
-    <div class="register-container d-flex flex-row-reverse">
-        <div class="col-xl-4 pr-5 mr-5 pb-2">
+    <div class="register-container row justify-content-center">
+        <div class="col-xl-4"></div>
+        <div class="col-xl-3 mx-auto logo_image">
+            <div class="bg-transparent text-light text-wrap">
+                <img src="assets/img/app/image3.png" width="350" alt="">
+                <div style="background-color:rgba(0,0,0,0.6);width: 350px;" class="p-3">
+                    {{'Login.label' | translate}}
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 mx-auto">
             <div class="card">
                 <div class="card-body text-center">
                     <h2 class="card-title">{{'Signup.title' | translate}}</h2>
@@ -60,10 +69,13 @@
 
                         <div class="form-group">
                             <input formControlName="DOB" class="form-control checking-field"
-                                placeholder="{{'Signup.DOB' | translate}}" type="date">
+                                placeholder="{{'Signup.DOB' | translate}}" type="date" [max]="today">
                             <span class="help-block" *ngIf="form.get('DOB').touched">
                                 <span class="text-danger" *ngIf="form.get('DOB').hasError('required')">
                                     {{'Signup.DOBRequiredMsg' | translate}}</span>
+
+                                <span class="text-danger" *ngIf="form.get('DOB').hasError('invalidDOB')">
+                                    {{'Signup.DOBInvalidMsg' | translate}}</span>
                             </span>
                         </div>
 
@@ -106,13 +118,6 @@
                 </div>
             </div>
         </div>
-        <div class="pr-5 mr-5 ">
-            <div class="bg-transparent text-light text-wrap mr-5">
-                <img src="assets/img/app/image3.png" width="350" alt="">
-                <div style="background-color:rgba(0,0,0,0.6);width: 350px;" class="p-3">
-                    {{'Login.label' | translate}}
-                </div>
-            </div>
-        </div>
+
     </div>
 </div>

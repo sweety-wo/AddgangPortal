@@ -17,12 +17,12 @@ export class AuthGuardService implements CanActivate {
     private fnCheckAuthenticate(next, url: string): Promise<boolean> | boolean {
         return new Promise((resolve, reject) => {
             // Check if token is available or not for accessing account routing otherwise redirect to login page.
-            if (!this._auth.fnGetToken()) {
-                this._router.navigate(['login']);
-                reject(false);
-            } else {
+            // if (!this._auth.fnGetToken()) {
+            //     this._router.navigate(['login']);
+            //     reject(false);
+            // } else {
                 resolve(true);
-            }
+            // }
         });
     }
 }

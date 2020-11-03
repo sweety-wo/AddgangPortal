@@ -1,10 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Select } from '@ngxs/store';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { CommonState } from './states/common/common.state';
+import { LanguageService } from './services/language/language.service';
 
 
 @Component({
@@ -15,24 +12,14 @@ import { CommonState } from './states/common/common.state';
 })
 
 export class AppComponent implements OnInit, OnDestroy {
-  @Select(CommonState.getState) language: Observable<any>;
-  private ngUnsubscribe = new Subject();
 
-  constructor(private translate: TranslateService,
+  constructor(private translate: TranslateService, private languageService: LanguageService,
     private spinner: NgxSpinnerService) {
   }
   ngOnInit() {
-    this.language.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((response: any) => {
-        if (response.language) {
-          this.translate.setDefaultLang(response.language);
-        } else {
-          this.translate.setDefaultLang("no");
-        }
-      });
+    this.languageService.getLanguage();
   }
   ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.languageService.unSubscribeLanguage();
   }
 }

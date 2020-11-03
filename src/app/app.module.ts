@@ -15,6 +15,7 @@ import { StateModule } from './states/state.module';
 import { StartupService } from './services/custom/startup-service/startup.service';
 import { InterceptorService } from './services/custom/interceptor-service/interceptor.service';
 import { UniversalStorageService } from './services/custom/universal-storage-service/universal-storage.service';
+import { LanguageService } from './services/language/language.service';
 import { AuthGuardService } from './services/custom/auth-gaurd-service/auth-guard.service';
 import { NotAuthGuardService } from './services/custom/no-auth-guard-service/no-auth-guard.service';
 import { AppState } from './app.state';
@@ -60,6 +61,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     UniversalStorageService,
     AuthGuardService,
     NotAuthGuardService,
+    LanguageService,
     AppState,
     AppConfig
   ],

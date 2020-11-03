@@ -5,14 +5,15 @@ import { tap } from 'rxjs/operators';
 import {
   LoginAction,
   LogoutAccountAction, ResetAccountStateAction,
+  ResetPasswordAction,
   SignUpAction,
 } from './account.action';
 import { AccountStateModel, DefaultAccountStateModel } from './account.model';
 import { Injectable, NgZone } from '@angular/core';
 import { AccountService } from './account.service';
 import { AuthTokenModel } from '../../core/models/auth-model';
-import { AuthService } from '../../services/custom/auth-service/auth.service';
 import { ForgotPasswordFormStateAction } from '../form';
+import { setUser } from 'src/app/states/common/common.actions';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 
@@ -27,7 +28,6 @@ export class AccountState {
   constructor(
     private _store: Store,
     private _accountService: AccountService,
-    private _auth: AuthService,
     private _router: Router,
     private _toastr: ToastrService,
     private zone: NgZone,
@@ -40,17 +40,16 @@ export class AccountState {
     return state.isLoading;
   }
 
-
   @Action(LoginAction)
   LoginAction({ getState, setState }: StateContext<AccountStateModel>, { payload }: LoginAction) {
     const state = getState();
     setState({ ...state, isLoading: true });
     return this._accountService.fnSignIn(payload).pipe(tap((result: AuthTokenModel) => {
       setState({ ...state, isLoading: false });
-      console.log('login', result);
-      if (result && result.token) {
-        this._auth.fnSetToken(result.token);
-        this._auth.fnGetAuthUser()
+      if (result) {
+        // this._auth.fnSetToken('true');
+        // this._auth.fnGetAuthUser()
+        this._store.dispatch(new setUser(result));
         setState({ ...state, auth: result });
         this._toastr.success('Login successful');
         this.zone.run(() => {
@@ -58,10 +57,13 @@ export class AccountState {
           this._router.navigate(['/pages']);
         });
       }
+      else {
+        this.loader.hide();
+        this._toastr.error('Invalid username and password.');
+      }
     }, (err) => {
       this.loader.hide();
       setState({ ...state, isLoading: false });
-      this._toastr.error(err.error.message);
     }));
   }
 
@@ -70,7 +72,6 @@ export class AccountState {
     const state = getState();
     setState({ ...state, isLoading: true });
     return this._accountService.fnSignUp(payload).pipe(tap((result: any) => {
-      console.log('signup', result);
       setState({ ...state, isLoading: false, auth: result });
       this.loader.hide();
       this._toastr.success('Registration successful');
@@ -78,7 +79,6 @@ export class AccountState {
     }, (err) => {
       this.loader.hide();
       setState({ ...state, isLoading: false });
-      this._toastr.error(err.error.message);
     }));
   }
 
@@ -94,14 +94,40 @@ export class AccountState {
     { payload }: ForgotPasswordFormStateAction) {
     const state = getState();
     setState({ ...state, auth: null });
-    this.loader.hide();
     return this._accountService.fnForgotPassword(payload).pipe(tap((result: any) => {
-      console.log('forgot', result);
+      if (result) {
+        this.loader.hide();
+        this._toastr.success('Email sent successfully');
+        this._router.navigate(['/login']);
+      }
+      else {
+        this.loader.hide();
+        this._toastr.error('Invalid username');
+      }
     }, (err) => {
+      this.loader.hide();
       setState({ ...state, isLoading: false });
-      console.log(err.error.message);
-      this._toastr.error(err.error.message);
     }));
+  }
+
+  @Action(ResetPasswordAction)
+  ResetPasswordAction({ getState, setState }: StateContext<AccountStateModel>,
+    { payload }: ResetPasswordAction) {
+    const state = getState();
+    setState({ ...state, auth: null });
+    return this._accountService.fnResetPassword(payload)
+      .pipe(tap((result: any) => {
+        if (result) {
+          this.loader.hide();
+          this._toastr.success('Password reset successfully');
+        } else {
+          this.loader.hide();
+          this._toastr.error('Invalid username and password.');
+        }
+      }, (err) => {
+        this.loader.hide();
+        setState({ ...state, isLoading: false });
+      }));
   }
 
   @Action(ResetAccountStateAction)

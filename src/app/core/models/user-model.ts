@@ -4,5 +4,5 @@ export interface UserModel {
 }
 
 export interface ForgotPassword {
-    userName: string;
+    email: string;
 }

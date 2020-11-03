@@ -7,6 +7,7 @@ import { tap } from 'rxjs/operators';
 import { AuthService } from '../auth-service/auth.service';
 import { UniversalStorageService } from '../universal-storage-service/universal-storage.service';
 import { environment } from '../../../../environments/environment';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Injectable({
@@ -16,6 +17,7 @@ export class InterceptorService implements HttpInterceptor {
 
     constructor(private _router: Router,
         private _auth: AuthService,
+        private toastr: ToastrService,
         private _cookies: UniversalStorageService) {
     }
 
@@ -38,19 +40,26 @@ export class InterceptorService implements HttpInterceptor {
                 if (error instanceof HttpErrorResponse) {
                     switch (error.status) {
                         case 401:
-                            console.error('STATUS CODE :: 401 =>', error.error);
+                            this.toastr.error(error.error['Message']);
                             this._auth.fnRemoveToken();
                             this._router.navigate(['/login']);
                             break;
                         case 403:
-                            console.error('STATUS CODE :: 403 =>', error.error);
+                            this.toastr.error(error.error['Message']);
                             if (this._router.url !== '/login') {
-
                             }
                             this._router.navigate(['/login']);
                             break;
+                        case 404:
+                            this.toastr.error(error.error['Message']);
+                            this._auth.fnRemoveToken();
+                            break;
+                        case 400:
+                            this.toastr.error(error.error['Message']);
+                            this._auth.fnRemoveToken();
+                            break;
                         default:
-                        // console.error('InterceptorService => ', error.status);
+                            this.toastr.error(error.error['Message']);
                     }
                 }
             })

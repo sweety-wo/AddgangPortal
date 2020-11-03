@@ -2,6 +2,7 @@ export interface FormStateModel {
     login: any;
     signup: any;
     forgotPassword: any;
+    resetPassword: any;
 }
 
 export const DefaultFormStateModel: FormStateModel = {
@@ -22,6 +23,12 @@ export const DefaultFormStateModel: FormStateModel = {
         dirty: false,
         status: '',
         errors: {}
+    },
+    resetPassword: {
+        model: {},
+        dirty: false,
+        status: '',
+        errors: {}
     }
 }
-    
+

@@ -9,3 +9,10 @@ export class setLanguage {
   constructor(public lang: string) {
   }
 }
+
+export class setUser {
+  static readonly type = '[Common] setUser';
+
+  constructor(public user: Object) {
+  }
+}

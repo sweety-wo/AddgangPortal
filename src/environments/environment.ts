@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  API_URL: 'https://mongo-kompletee.herokuapp.com/'
+  API_URL: 'http://d3api.ltestsystems.com/api/adgang/'
 };
 
 /*

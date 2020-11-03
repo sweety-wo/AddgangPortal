@@ -3,10 +3,16 @@ import { ForgotPassword } from 'src/app/core/models/user-model';
 export class LoginFormSubmitAction {
   static readonly type = '[Form] LoginFormSubmitAction';
 
-  constructor() {
+  constructor(public payload: any) {
   }
 }
 
+export class ResetPasswordFormStateAction {
+  static readonly type = '[Form] ResetFormSubmitAction';
+
+  constructor() {
+  }
+}
 export class SignUpFormSubmitAction {
   static readonly type = '[Form] SignUpFormSubmitAction';
 

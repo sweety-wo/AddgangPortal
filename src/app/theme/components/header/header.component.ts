@@ -1,7 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngxs/store';
-import { setLanguage } from 'src/app/states/common/common.actions';
+import { LanguageService } from 'src/app/services/language/language.service';
 
 @Component({
   selector: 'az-header',
@@ -11,12 +10,11 @@ import { setLanguage } from 'src/app/states/common/common.actions';
 })
 export class HeaderComponent {
 
-  constructor(private translate: TranslateService,
+  constructor(private languageService: LanguageService,
     public store: Store) { }
 
   changeLang(lang) {
-    this.translate.setDefaultLang(lang);
-    this.store.dispatch(new setLanguage(lang))
+    this.languageService.changeLang(lang)
   }
 
 }

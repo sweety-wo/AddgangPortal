@@ -6,6 +6,7 @@ import { AccountState } from './account/account.state';
 import { FormState } from './form/form.state';
 import { UserState } from './user/user.state';
 import { CommonState } from './common/common.state';
+import { SharedModule } from '../common/shared/shared.module';
 
 const STATES = [
   AccountState,
@@ -19,6 +20,7 @@ const STATES = [
     NgxsModule.forRoot(STATES),
     NgxsFormPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
+    SharedModule
   ],
   providers: [],
 })

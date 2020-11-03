@@ -22,6 +22,10 @@ export const routes: Routes = [
     path: 'forgot-password', loadChildren: () => import('./pages/forgot-password/forgot-password.module').then(m => m.ForgotPasswordModule),
     canActivate: [NotAuthGuardService]
   },
+  {
+    path: 'reset-password', loadChildren: () => import('./pages/reset-password/reset-password.module').then(m => m.ResetPasswordModule),
+    canActivate: [NotAuthGuardService]
+  },
   { path: '**', component: ErrorComponent }
 ];
 
