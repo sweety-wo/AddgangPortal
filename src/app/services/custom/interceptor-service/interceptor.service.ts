@@ -38,34 +38,27 @@ export class InterceptorService implements HttpInterceptor {
                 }
             }, (error: any) => {
                 if (error instanceof HttpErrorResponse) {
-                    console.log('error', error);
                     switch (error.status) {
-
                         case 401:
-                            console.error('STATUS CODE :: 401 =>', error.error['Message']);
                             this.toastr.error(error.error['Message']);
                             this._auth.fnRemoveToken();
                             this._router.navigate(['/login']);
                             break;
                         case 403:
-                            console.error('STATUS CODE :: 403 =>', error.error['Message']);
                             this.toastr.error(error.error['Message']);
                             if (this._router.url !== '/login') {
                             }
                             this._router.navigate(['/login']);
                             break;
                         case 404:
-                            console.error('STATUS CODE :: 404 =>', error.error['Message']);
                             this.toastr.error(error.error['Message']);
                             this._auth.fnRemoveToken();
                             break;
                         case 400:
-                            console.error('STATUS CODE :: 400 =>', error.error['Message']);
                             this.toastr.error(error.error['Message']);
                             this._auth.fnRemoveToken();
                             break;
                         default:
-                            console.error('InterceptorService => ', error.status);
                             this.toastr.error(error.error['Message']);
                     }
                 }

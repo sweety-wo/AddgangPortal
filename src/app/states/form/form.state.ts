@@ -29,14 +29,12 @@ export class FormState {
   LoginFormSubmitAction({ getState }: StateContext<any>, { payload }: LoginFormSubmitAction) {
 
     const state: FormStateModel = getState();
-    console.log(state);
     this._store.dispatch(new LoginAction(payload));
   }
 
   @Action(SignUpFormSubmitAction)
   SignUpFormSubmitAction({ getState }: StateContext<any>) {
     const state = getState();
-    console.log(state);
     if (state && state.signup && state.signup.model) {
       const model: any = state.signup.model;
 
@@ -49,7 +47,6 @@ export class FormState {
   @Action(ResetPasswordFormStateAction)
   ResetPasswordFormStateAction({ getState }: StateContext<any>) {
     const state = getState();
-    console.log(state);
     if (state && state.resetPassword && state.resetPassword.model) {
       const model: any = state.resetPassword.model;
 

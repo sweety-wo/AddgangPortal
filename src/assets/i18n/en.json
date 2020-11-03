@@ -37,6 +37,7 @@
     "fullNameRequiredMsg": "First and Middle Name is required",
     "surNameRequiredMsg": "Surname is required",
     "DOBRequiredMsg": "Date Of Birth is required",
+    "DOBInvalidMsg": "Invalid date of birth",
     "mobileNoRequiredMsg": "Mobile No is required",
     "mobileNoInvalidMsg": "Mobile Number must be 10 digits",
     "signupBtn": "Sign Up",

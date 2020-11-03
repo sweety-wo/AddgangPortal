@@ -4,63 +4,60 @@ import { FormGroup, FormControl, AbstractControl, FormBuilder, Validators } from
 import { TranslateService } from '@ngx-translate/core';
 import { ResetAccountStateAction } from '../../states/account';
 import { SignUpFormSubmitAction } from '../../states/form';
-import { Observable, Subject } from 'rxjs';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { UpdateFormValue } from '@ngxs/form-plugin';
-import { CommonState } from 'src/app/states/common/common.state';
-import { takeUntil } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { WizardValidationService } from '../form-elements/wizard/wizard-validation.service';
+import * as moment from 'moment';
+import { LanguageService } from 'src/app/services/language/language.service';
 
 @Component({
     selector: 'az-register',
     encapsulation: ViewEncapsulation.None,
     templateUrl: './register.component.html',
-    styleUrls: ['./register.component.scss']
+    styleUrls: ['./register.component.scss'],
+    providers: [WizardValidationService]
 })
 export class RegisterComponent implements OnInit, OnDestroy {
     public router: Router;
     public form: FormGroup;
-    private ngUnsubscribe = new Subject();
     public sex = [{ name: 'Male', value: 'male' }, { name: 'Female', value: 'female' }];
     defaultSex = 'male';
-    @Select(CommonState.getState) language: Observable<any>;
+    public today = moment().format('YYYY-MM-DD');
     constructor(
         router: Router,
         fb: FormBuilder,
         public translate: TranslateService,
         private _store: Store,
-        public loader: NgxSpinnerService
+        public loader: NgxSpinnerService,
+        public languageService: LanguageService
     ) {
         this.router = router;
         this.form = fb.group({
-            userName: ['', Validators.compose([Validators.required, emailValidator])],
+            userName: ['', Validators.compose([Validators.required, WizardValidationService.emailValidator])],
             password: ['', Validators.required],
             confirmPassword: ['', Validators.required],
             fullName: ['', Validators.required],
             surName: ['', Validators.required],
-            DOB: ['', Validators.required],
+            DOB: ['', Validators.compose([Validators.required, WizardValidationService.validateDOB])],
             sex: ['', Validators.required],
             mobileNo: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])]
-        }, { validator: matchingPasswords('password', 'confirmPassword') });
+        }, { validator: WizardValidationService.matchingPasswords('password', 'confirmPassword') });
 
         this.form.controls['sex'].setValue(this.defaultSex, { onlySelf: true });
-
-        // const lang = localStorage.getItem("language");
-        // translate.setDefaultLang(lang);
     }
 
     ngOnInit() {
-        this.language.pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe((response: any) => {
-                if (response.language) {
-                    this.translate.setDefaultLang(response.language);
-                } else {
-                    this.translate.setDefaultLang("no");
-                }
-            });
+        this.languageService.getLanguage();
     }
-
+    ngOnDestroy() {
+        this.languageService.unSubscribeLanguage();
+        this.fnResetSignUpFormState();
+        this._store.dispatch(new ResetAccountStateAction());
+    }
     public onSubmit(values: Object): void {
+        console.log(this.form);
+
         if (this.form.valid) {
             this.loader.show();
             this._store.dispatch(new SignUpFormSubmitAction());
@@ -77,12 +74,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
         );
     }
 
-    ngOnDestroy() {
-        this.ngUnsubscribe.next();
-        this.ngUnsubscribe.complete();
-        this.fnResetSignUpFormState();
-        this._store.dispatch(new ResetAccountStateAction());
-    }
 
     numberOnly(event): boolean {
         const charCode = (event.which) ? event.which : event.keyCode;
@@ -90,22 +81,5 @@ export class RegisterComponent implements OnInit, OnDestroy {
             return false;
         }
         return true;
-    }
-}
-
-export function emailValidator(control: FormControl): { [key: string]: any } {
-    var emailRegexp = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/;
-    if (control.value && !emailRegexp.test(control.value)) {
-        return { invalidEmail: true };
-    }
-}
-
-export function matchingPasswords(passwordKey: string, passwordConfirmationKey: string) {
-    return (group: FormGroup) => {
-        let password = group.controls[passwordKey];
-        let passwordConfirmation = group.controls[passwordConfirmationKey];
-        if (password.value !== passwordConfirmation.value) {
-            return passwordConfirmation.setErrors({ mismatchedPasswords: true })
-        }
     }
 }

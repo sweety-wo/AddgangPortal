@@ -3,24 +3,22 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 import { ResetPasswordFormStateAction } from '../../states/form';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { CommonState } from 'src/app/states/common/common.state';
 import { ToastrService } from 'ngx-toastr';
+import { WizardValidationService } from '../form-elements/wizard/wizard-validation.service';
+import { LanguageService } from 'src/app/services/language/language.service';
 
 @Component({
   selector: 'az-reset-password',
   templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.scss']
+  styleUrls: ['./reset-password.component.scss'],
+  providers: [WizardValidationService]
 })
 export class ResetPasswordComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   public email: AbstractControl;
   public password: AbstractControl;
-  private ngUnsubscribe = new Subject();
-  @Select(CommonState.getState) language: Observable<any>;
 
   constructor(
     public router: Router,
@@ -29,7 +27,8 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     private _store: Store,
     private toastr: ToastrService,
     private activatedRoute: ActivatedRoute,
-    public loader: NgxSpinnerService
+    public loader: NgxSpinnerService,
+    public languageService: LanguageService
   ) {
 
     this.activatedRoute.queryParams.subscribe(params => {
@@ -44,26 +43,17 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
       email: ['demo@gmail.com'],
       password: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
       confirmPassword: ['', Validators.compose([Validators.required, Validators.minLength(6)])]
-    }, { validator: matchingPasswords('password', 'confirmPassword') });
-    console.log(this.translate);
+    }, { validator: WizardValidationService.matchingPasswords('password', 'confirmPassword') });
     this.email = this.form.controls['email'];
     this.password = this.form.controls['password'];
 
   }
 
   ngOnInit(): void {
-    this.language.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((response: any) => {
-        if (response.language) {
-          this.translate.setDefaultLang(response.language);
-        } else {
-          this.translate.setDefaultLang("no");
-        }
-      });
+    this.languageService.getLanguage();
   }
   ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.languageService.unSubscribeLanguage();
   }
   onSubmit(value) {
     if (this.form.valid) {
@@ -72,20 +62,4 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     }
   }
 
-}
-
-export function emailValidator(control: FormControl): { [key: string]: any } {
-  var emailRegexp = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/;
-  if (control.value && !emailRegexp.test(control.value)) {
-    return { invalidEmail: true };
-  }
-}
-export function matchingPasswords(passwordKey: string, passwordConfirmationKey: string) {
-  return (group: FormGroup) => {
-    let password = group.controls[passwordKey];
-    let passwordConfirmation = group.controls[passwordConfirmationKey];
-    if (password.value !== passwordConfirmation.value) {
-      return passwordConfirmation.setErrors({ mismatchedPasswords: true })
-    }
-  }
 }

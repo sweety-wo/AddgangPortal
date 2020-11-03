@@ -19,12 +19,10 @@ export class AccountService {
       email: payload.email,
       password: payload.password
     }
-    console.log(environment.API_URL + `Login`, form);
     return this._http.post<AuthTokenModel>(environment.API_URL + `Login`, form);
   }
 
   fnSignUp(payload: any) {
-    console.log(payload);
     const form = {
       "username": payload.userName,
       "contactno": payload.mobileNo,
@@ -38,12 +36,10 @@ export class AccountService {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    console.log(environment.API_URL + `Signup`, form);
     return this._http.post<AuthTokenModel>(environment.API_URL + `Signup`, form, { headers: headers });
   }
 
   fnResetPassword(payload: any) {
-    console.log(payload);
     const form = {
       "username": payload.email,
       "password": payload.password,
@@ -51,14 +47,12 @@ export class AccountService {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    console.log(environment.API_URL + `ResetPassword`, form);
     return this._http.post<AuthTokenModel>(environment.API_URL + `ResetPassword`, form, { headers: headers });
 
   }
 
   fnForgotPassword(payload: ForgotPassword) {
     let emailString = "?email=" + payload.email;
-    console.log(environment.API_URL + `forgotPassword`, payload);
     return this._http.get<AuthTokenModel>(environment.API_URL + `forgotPassword` + emailString);
   }
 }

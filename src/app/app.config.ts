@@ -43,7 +43,6 @@ export class AppConfig {
             return new Color(new HEX(color)).setAlpha(opacity).toString();
         } 
         else{
-            console.log("incorrect color: " + color); 
             return 'rgba(255,255,255,0.7)'; 
         }     
     }

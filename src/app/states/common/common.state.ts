@@ -23,7 +23,6 @@ export class CommonState {
   @Action(setLanguage)
   setLanguage({ getState, setState }: StateContext<CommonStateModel>, { lang }: setLanguage) {
     const state = getState();
-    console.log(lang);
     setState({ ...state, language: lang });
   }
   @Action(setUser)

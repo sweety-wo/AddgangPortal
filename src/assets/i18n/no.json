@@ -37,6 +37,7 @@
     "fullNameRequiredMsg": "For- og mellomnavn er obligatorisk",
     "surNameRequiredMsg": "Surnavn kreves",
     "DOBRequiredMsg": "Fødselsdato kreves",
+    "DOBInvalidMsg": "Ugyldig fødselsdato",
     "mobileNoRequiredMsg": "Mobilnummer kreves",
     "mobileNoInvalidMsg": "Mobilnummeret må bestå av 10 sifre",
     "signupBtn": "Melde deg på",

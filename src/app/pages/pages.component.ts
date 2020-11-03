@@ -20,8 +20,6 @@ export class PagesComponent implements OnInit {
         this._state.subscribe('menu.isCollapsed', (isCollapsed) => {
             this.isMenuCollapsed = true;
         });
-        const lang = localStorage.getItem("language");
-        translate.setDefaultLang(lang);
     }
 
     ngOnInit() {
@@ -37,10 +35,6 @@ export class PagesComponent implements OnInit {
             subMenu.closest("li").addClass("sidebar-item-expanded");
             subMenu.slideDown(250);
         });
-    }
-    changeLang(lang) {
-        this.translate.setDefaultLang(lang);
-        localStorage.setItem("language", lang);
     }
 
     public hideMenu(): void {

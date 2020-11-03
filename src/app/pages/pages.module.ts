@@ -10,12 +10,7 @@ import { DirectivesModule } from '../theme/directives/directives.module';
 import { PipesModule } from '../theme/pipes/pipes.module';
 import { PagesRoutingModule } from './pages.routing';
 import { PagesComponent } from './pages.component';
-import { MenuComponent } from '../theme/components/menu/menu.component';
-import { SidebarComponent } from '../theme/components/sidebar/sidebar.component';
 import { NavbarComponent } from '../theme/components/navbar/navbar.component';
-import { MessagesComponent } from '../theme/components/messages/messages.component';
-import { BreadcrumbComponent } from '../theme/components/breadcrumb/breadcrumb.component';
-import { BackTopComponent } from '../theme/components/back-top/back-top.component';
 import { SharedModule } from 'src/app/common/shared/shared.module';
 
 @NgModule({
@@ -29,12 +24,7 @@ import { SharedModule } from 'src/app/common/shared/shared.module';
   ],
   declarations: [
     PagesComponent,
-    MenuComponent,
-    SidebarComponent,
     NavbarComponent,
-    MessagesComponent,
-    BreadcrumbComponent,
-    BackTopComponent
   ],
   providers: [
     {
